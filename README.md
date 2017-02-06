@@ -4,7 +4,7 @@ Jama Software is the definitive system of record and action for product developm
 
 Please visit [dev.jamasoftware.com](http://dev.jamasoftware.com) for additional resources and join the discussion in our community [community.jamasoftware.com](http://community.jamasoftware.com).
 
-##Admin Report Generator
+##Admin Configuration Generator
 ```generateAdminReport.py``` is a script which extracts any and all configurations for projects, item types, and picklists in a Jama instance using the Jama REST API. The script will output the configuration information to a file called `out.html` which can be viewed in your internet browser.
 
 Please note that this script is distrubuted as-is as an example and will likely require modification to work for your specific use-case.  This example omits error checking. Jama Support will not assist with the use or modification of the script.
