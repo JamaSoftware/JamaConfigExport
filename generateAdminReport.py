@@ -1,7 +1,7 @@
 from item_types_server import Admin_report
 
 # replace {base_url}, username and password
-baseUrl = "https://{base url}/rest/v1/"
+baseUrl = "https://<base_url>/rest/v1/"
 username = "username"
 password = "password"
 
@@ -13,5 +13,5 @@ projects = "all"
 
 admin_report = Admin_report(base_url=baseUrl, username=username, password=password, projects=projects)
 
-f = open("out.html", "w")
-f.write(admin_report.get_html())
+f = open("out.json", "w")
+f.write(str(admin_report.get_json()))

@@ -3,6 +3,7 @@ import requests
 import json
 import cgi
 import os
+import json
 
 class Admin_report:
 
@@ -50,10 +51,10 @@ class Admin_report:
             self.project_list = [p.strip() for p in projects.split(',')]
 
     def write_headers(self):
-        self.big_string += "<html>\n<head>\n<body>"
+        self.big_string += "<html>\n<head>\n<title>Jama Admin Report</title>\n</head>\n<body>"
 
     def write_footers(self):
-        self.big_string += "</body>\n</head>\n</html>"
+        self.big_string += "</body>\n</html>"
 
     def write_anchor(self, anchor):
         self.big_string += "<a name=\"{}\"></a>".format(anchor)
@@ -118,7 +119,7 @@ class Admin_report:
         for item in items:
             dictionary[item["id"]] = item
 
-    def populate_dictionaries(self):
+    def zpopulate_dictionaries(self):
         if self.project_list == "all":
             projects_response = self.get_all(self.base_url + "projects")
         else:
@@ -217,6 +218,31 @@ class Admin_report:
     def valid_key(self, key, blacklist):
         return key not in blacklist
 
+    def get_json(self):
+        self.prep()
+        # lets see if we can dump the projects into a json array
+        project_array = []
+        picklist_array = []
+        itemtype_array = []
+
+        # loop through the projects, picklists, and itemtypes, and dump it into a json
+        for project_id, project in self.projects.iteritems():
+            project_array.append(project)
+
+        for picklist_id, picklists in self.picklists.iteritems():
+            picklist_array.append(picklists)
+
+        for itemtype_id, itemtypes in self.item_types.iteritems():
+            itemtype_array.append(itemtypes)
+
+        json_dump = json.dumps(
+            { "projects": project_array,
+              "picklists": picklist_array,
+              "itemtypes": itemtype_array
+            }
+        )
+        return json_dump
+
     def get_html(self):
         self.prep()
         self.write_headers()
@@ -224,8 +250,9 @@ class Admin_report:
         self.write_item_types()
         self.write_picklists()
         self.write_footers()
+
         return self.big_string
-        
+
     def write_picklists(self):
         self.write_section_header("Picklists", 0, 20)
         for picklist_id in self.picklists:
